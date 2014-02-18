@@ -1,0 +1,3 @@
+super + alt + Tab
+	killall sxhkd;\
+	sxhkd 

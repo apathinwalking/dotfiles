@@ -1,0 +1,2 @@
+killall panel
+bspc config top_padding 0

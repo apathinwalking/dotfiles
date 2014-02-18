@@ -1,0 +1,202 @@
+#BSPWM HOTKEYS
+
+################
+#### PANELS ####
+################
+
+#Toggle panel
+alt + F1
+    source ~/.config/bspwm/scripts/panel_toggle.sh
+
+#Toggle dock
+alt + F2 
+    source ~/.config/bspwm/scripts/dock_toggle.sh 
+
+################
+### WINDOWS ####
+################
+
+#close window
+alt + q
+    bspc window -c
+
+#Navigating between windows
+alt + {k,j,h,l}
+    bspc window -f {up, down, left, right}
+
+alt + {_,shift + } Tab
+    bspc window -f {next,prev}
+
+#Swapping windows
+alt + shift + {k,j,h,l,b}
+    bspc window -s {up, down, left, right, biggest}
+
+#Resize tiled window
+alt + ctrl + {h,j,k,l}
+    bspc window -e {left -15,down +10,up -10,right +15}
+
+#Resize tiled window 2
+alt + shift + ctrl + {h,j,k,l}
+    bspc window -e {right -15,up +10,down -10,left +15}
+
+#Toggle floating
+super + f 
+    bspc window -t floating
+
+#Toggle Fullscreen
+super + shift + f
+    bspc window -t fullscreen
+
+#Toggle Pseudotiled
+super + t
+    bspc window -t pseudo_tiled
+
+#Decrease window gap
+super + period
+    sh ~/.config/bspwm/scripts/adjust_window_gap.sh 1
+
+#Increase Window gap
+super + comma
+    sh ~/.config/bspwm/scripts/adjust_window_gap.sh -1
+
+#control where the next window will be placed
+super + {w,s,a,d}
+    bspc window -r 0.5;\
+    bspc window -p {up,down,left,right}
+    
+
+super + x
+    sh ~/.config/bspwm/scripts/cut_window.sh
+
+super + v
+    sh ~/.config/bspwm/scripts/paste_window.sh
+
+
+##################
+## APPLICATIONS ##
+##################
+
+alt + {w,s,a,d} ; {_,shift,ctrl + } Return
+    sh ~/.config/bspwm/scripts/place_window.sh {'up','down','left','right'} {'m','l','s'} urxvt
+
+alt + {w,s,a,d} ; {_,shift,ctrl + } i
+    sh ~/.config/bspwm/scripts/place_window.sh {'up','down','left','right'} {'m','l','s'} chromium
+
+alt + {w,s,a,d} ; {_,shift,ctrl + } p
+    sh ~/.config/bspwm/scripts/place_window.sh {'up','down','left','right'} {'m','l','s'} "chromium --incognito"
+
+alt + {w,s,a,d} ; {_,shift,ctrl + } m
+    sh ~/.config/bspwm/scripts/place_window.sh {'up','down','left','right'} {'m','l','s'} "urxvt -e ncmpcpp"
+
+alt + {w,s,a,d} ; {_,shift,ctrl + } f
+    sh ~/.config/bspwm/scripts/place_window.sh {'up','down','left','right'} {'m','l','s'} "urxvt -e ranger"
+
+alt + {w,s,a,d} ; {_,shift,ctrl + } slash
+    sh ~/.config/bspwm/scripts/place_window.sh {'up','down','left','right'} {'m','l','s'} dmenu_run
+
+alt + {w,s,a,d} ; {_,shift,ctrl + } z
+    sh ~/.config/bspwm/scripts/place_window.sh {'up','down','left','right'} {'m','l','s'} create_frame    
+
+alt + x; {Return, i, m, f, z, slash}
+    {urxvt, chromium, urxvt_ncmpcpp, urxvt_ranger, create_frame, dmenu_run}
+
+##############
+## DESKTOPS ##
+##############
+
+#Flip the desktop horizontally
+alt + {_,shift +} f
+    bspc desktop -F {vertical,horizontal}
+
+alt + {_,shift +} r
+    bspc desktop -R {90,270}    
+
+alt + {_,shift +} c
+    bspc desktop -C {forward, backward}
+
+alt + apostrophe
+    bspc window -s last
+
+alt + {o,i}
+    bspc control --record-history off; \
+    bspc window {older,newer} -f; \
+    bspc control --record-history on
+
+alt + y
+    bspc window -w last.manual
+
+alt + {comma,period}
+    bspc desktop -C {backward,forward}
+
+alt + bracket{left,right}
+    bspc desktop -f {prev,next}
+
+alt + ctrl + {_,shift + }space
+    bspc {window -p cancel,desktop -c}
+
+alt + ctrl + {h,j,k,l}
+    bspc window -e {left,down,up,right} push
+
+alt + {_,shift + }{1,2,3,4,5,6,7,8,9,0,m}
+    bspc {desktop -f,window -d} {1,2,3,4,5,6,7,8,9,10,'MUSIC'}
+
+~button1
+    bspc pointer -g focus
+
+alt + button{1-3}
+    bspc pointer -g {move,resize_side,resize_corner}
+
+alt + !button{1-3}
+    bspc pointer -t %i %i
+
+alt + @button{1-3}
+    bspc pointer -u
+
+######################
+####### GENERAL ######
+######################
+
+#quit bspwm
+super + alt + Escape
+    bspc quit
+
+# make sxhkd reload its configuration files:
+alt + Escape; s
+    pkill -USR1 -x sxhkd
+
+# reload compton configuration files:
+alt + Escape; c
+    killall compton;\
+    compton --config ~/.config/compton.conf &
+
+# reload bspwm config
+alt + Escape; b
+    source ~/.config/bspwm/bspwmrc
+
+#Get rid of all key mappings (super alt tab to return)
+super + alt + Tab
+    killall sxhkd;\
+    sxhkd -c ~/.config/bspwm/scripts/toggle_sxhkd
+    
+#Adjust the window gap (more gap)
+alt + ctrl + s :  Up
+    source ~/.config/bspwm/scripts/adjust_window_gap.sh 2
+
+#Adjust the window gap (less gap)
+alt + ctrl + s : Down 
+    source ~/.config/bspwm/scripts/adjust_window_gap.sh -2
+
+######################
+### MEDIA CONTROLS ###
+######################
+XF86AudioRaiseVolume
+    amixer -c 0 set Master 1dB+
+XF86AudioLowerVolume
+    amixer -c 0 set Master 1dB-
+XF86AudioMute
+    amixer -c 0 set Master 0%
+XF86AudioPlay
+    mpc toggle
+
+
+
